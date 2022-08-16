@@ -2,3 +2,5 @@ credentials.py
 .idea
 __pycache__
 .DS_Store
+downloaded
+filtered
