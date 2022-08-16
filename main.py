@@ -8,8 +8,11 @@ SECRET = "THE CLIENT SECRET FOUND IN https://www.reddit.com/prefs/apps"
 '''
 # THE CODE RELIES ON IMPORTING THE VARIABLES IN IT TO FUNCTION.
 
+import os
+import shutil
 import requests.auth
 from credentials import USERNAME, PASSWORD, CLIENT_ID, SECRET
+import wget
 
 TOKEN_ACCESS_ENDPOINT = "https://www.reddit.com/api/v1/access_token"
 
@@ -33,16 +36,32 @@ else:
 
 OAUTH_ENDPOINT = "https://oauth.reddit.com"
 params_get = {
-    "limit": 69
+    "limit": 250
 }
 headers_get = {
     "User-Agent": "Saved Image Downloader Alpha 1",
     "Authorization": "Bearer " + token_id
 }
+
 response_saved = requests.get(OAUTH_ENDPOINT + f"/user/{USERNAME}/saved", headers=headers_get, params=params_get)
 data = response_saved.json()
 saved_count = len(data["data"]["children"])
 saved_list = []
+format_filter = ("jpg", "jpeg", "png", "gif")
+
+if not os.path.exists("downloaded"):
+    os.mkdir("downloaded")
+if not os.path.exists("filtered"):
+    os.mkdir("../filtered")
+
 for i in range(saved_count):
     saved_list.append(data["data"]["children"][i]["data"]["url"])
-print(saved_list)
+
+for link in saved_list:
+    filename = link.split("/")[-1]
+    if link.endswith(format_filter) and not os.path.exists(f"downloaded/{filename}"):
+        wget.download(link, f"downloaded/{filename}")
+
+for filename in os.listdir("downloaded"):
+    if os.path.getsize(f"downloaded/{filename}") < 4096:
+        shutil.move(f"downloaded/{filename}", f"filtered/{filename}")
