@@ -1,6 +1,6 @@
 # YOU MUST MAKE A credentials.py FILE BEFOREHAND!
 # PREFERABLY OF THIS FORMAT:
-'''
+''' FILENAME: credentials.py
 USERNAME = "YOUR REDDIT USERNAME"
 PASSWORD = "YOUR REDDIT PASSWORD"
 CLIENT_ID = "THE CLIENT ID FOUND IN https://www.reddit.com/prefs/apps"
@@ -22,6 +22,18 @@ def recursive_in(filter, string):
     return False
 
 
+# Probably will be used later as a wget.download alternative
+def download_via_response(addr, path, output_name):
+    d_img = open(f"{path}/{output_name}", 'wb')
+    resp = requests.get(addr, headers={
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) "
+                      "AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/83.0.4103.97 Safari/537.36"
+    })
+    d_img.write(resp.content)
+    d_img.close()
+
+
 TOKEN_ACCESS_ENDPOINT = "https://www.reddit.com/api/v1/access_token"
 
 # Authenticate App
@@ -32,7 +44,7 @@ post_data = {
     "password": PASSWORD
 }
 headers = {
-    "User-Agent": "Saved Image Downloader Beta 1"
+    "User-Agent": "Saved Image Downloader Alpha 1",
 }
 
 # Get API Token
@@ -42,7 +54,9 @@ if response.status_code == 200:
     token_id = response.json()["access_token"]
     print("Done.")
 else:
-    token_id = ""
+    token_id = 0
+    print("FATAL: Failed to get API token.")
+    exit(1)
 
 OAUTH_ENDPOINT = "https://oauth.reddit.com"
 params_get = {
@@ -58,7 +72,7 @@ data = response_saved.json()
 saved_count = len(data["data"]["children"])
 saved_list = []
 format_filter = ("jpg", "jpeg", "png", "gif")
-gay_filter = ["gay", "femboy", "trap", "twink", "bisexual"]
+gay_filter = ["gay", "femboy", "trap", "twink", "bisexual", "futa"]
 sfw_lgbt_filter = ["egg", "lgbt", "ennnnnnnnnnnnbbbbbby"]
 
 if not os.path.exists("downloaded"):
@@ -82,15 +96,28 @@ for root, dirs, file in os.walk(os.getcwd()):
         if name.endswith(format_filter):
             existing_files.append(name)
 
+print(existing_files)
+
 for post in saved_list:
-    filename = post["url"].split("/")[-1]
-    if filename.endswith(format_filter) and filename not in existing_files:
-        if recursive_in(gay_filter, post["subreddit"]):
-            wget.download(post["url"], f"downloaded/gay/{filename}")
-        if recursive_in(sfw_lgbt_filter, post["subreddit"]):
-            wget.download(post["url"], f"downloaded/sfw/{filename}")
-        else:
-            wget.download(post["url"], f"downloaded/straight/{filename}")
+    url = []
+    if "gallery" in post["url"]:
+        for key in post["media_metadata"].keys():
+            preview_url = post["media_metadata"][key]["s"]["u"]
+            image_url = preview_url.replace("preview", "i").split("?")[0]
+            url.append(image_url)
+    else:
+        url.append(post["url"])
+    for entry in url:
+        if not entry.endswith(format_filter) or "gelbooru" in entry:
+            break
+        filename = entry.split("/")[-1]
+        if filename not in existing_files:
+            if recursive_in(gay_filter, post["subreddit"]):
+                wget.download(entry, f"downloaded/gay/{filename}")
+            if recursive_in(sfw_lgbt_filter, post["subreddit"]):
+                wget.download(entry, f"downloaded/sfw/{filename}")
+            else:
+                wget.download(entry, f"downloaded/straight/{filename}")
 
 # TODO: Filter out invalid images
 '''
