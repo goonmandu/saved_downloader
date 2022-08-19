@@ -33,5 +33,7 @@ SECRET = "Your app's client secret. Found above the app name."
 # TODO
 - [x] Download images in gallery  
 - [x] Categorize images based on origin subreddit  
+- [x] Add Redgifs support
+- [ ] Add Gelbooru support
 - [ ] Filter out files less than 4kB in size for manual review  
 - [ ] Add support for command line arguments
