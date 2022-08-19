@@ -56,6 +56,8 @@ if not os.path.exists("downloaded/sfw"):
 if not os.path.exists("filtered"):
     os.mkdir("filtered")
 
+count = int(input("How many HUNDRED posts to download? (3 means 300) "))
+
 # Authenticate App
 client_auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET)
 post_data = {
@@ -88,7 +90,7 @@ headers_get = {
 }
 print("Downloading...")
 # Get 5 * 100 = 500 latest saved posts
-for _ in range(5):
+for _ in range(count):
     response_saved = requests.get(OAUTH_ENDPOINT + f"/user/{USERNAME}/saved", headers=headers_get, params=params_get)
     data = response_saved.json()
     saved_count = len(data["data"]["children"])
