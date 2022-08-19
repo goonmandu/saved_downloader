@@ -3,8 +3,10 @@ A script that automatically downloads your saved images on Reddit.
 
 # Requirements
 Tested on Python 3.9.  
-`pip install wget`  
-`pip install requests`
+```bash
+~$ pip3 install wget 
+~$ pip3 install requests
+```
 
 # If you want to use this:
 ## Registering the Reddit app
