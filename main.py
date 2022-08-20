@@ -125,7 +125,6 @@ for _ in range(count):
             if not recursive_in(allow_sites, entry) and (not entry.endswith(format_filter) or recursive_in(skip_sites, entry)):
                 break
             filename = entry.split("/")[-1]
-            print(entry)
             if recursive_in(gay_filter, post["subreddit"]):
                 if recursive_in(allow_sites, entry):
                     download_via_requests(entry, "downloaded/gay", filename)
