@@ -36,11 +36,11 @@ def download_via_requests(addr, path, output_name):
 
 
 # Define core variables
-format_filter = ("jpg", "jpeg", "png", "gif", "gifv")
+format_filter = ("jpg", "jpeg", "png", "gif")
 gay_filter = ["gay", "femboy", "trap", "twink", "bisexual", "futa"]
 sfw_lgbt_filter = ["egg", "lgbt", "ennnnnnnnnnnnbbbbbby"]
 skip_sites = ["pximg", "gelbooru"]
-allow_sites = ["redgifs"]
+allow_sites = ["redgifs", "discordapp"]
 TOKEN_ACCESS_ENDPOINT = "https://www.reddit.com/api/v1/access_token"
 OAUTH_ENDPOINT = "https://oauth.reddit.com"
 
@@ -107,7 +107,7 @@ for _ in range(count):
 
     for post in saved_list:
         url = []
-        if "gallery" in post["url"]:
+        if "gallery" in post["url"] and post["media_metadata"] is not None:
             for key in post["media_metadata"].keys():
                 preview_url = post["media_metadata"][key]["s"]["u"]
                 image_url = preview_url.replace("preview", "i").split("?")[0]
@@ -125,24 +125,24 @@ for _ in range(count):
             if not recursive_in(allow_sites, entry) and (not entry.endswith(format_filter) or recursive_in(skip_sites, entry)):
                 break
             filename = entry.split("/")[-1]
-
+            print(entry)
             if recursive_in(gay_filter, post["subreddit"]):
-                if "redgifs" in entry:
+                if recursive_in(allow_sites, entry):
                     download_via_requests(entry, "downloaded/gay", filename)
                 elif filename not in existing_files:
                     wget.download(entry, f"downloaded/gay/{filename}")
             elif recursive_in(sfw_lgbt_filter, post["subreddit"]):
-                if "redgifs" in entry:
+                if recursive_in(allow_sites, entry):
                     download_via_requests(entry, "downloaded/sfw", filename)
                 elif filename not in existing_files:
                     wget.download(entry, f"downloaded/sfw/{filename}")
             else:
-                if "redgifs" in entry:
+                if recursive_in(allow_sites, entry):
                     download_via_requests(entry, "downloaded/straight", filename)
                 elif filename not in existing_files:
                     wget.download(entry, f"downloaded/straight/{filename}")
     params_get["after"] = data["data"]["after"]
-print("Done.")
+print("\nDone.")
 
 
 # TODO: Filter out invalid images
