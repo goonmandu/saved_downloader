@@ -37,7 +37,7 @@ def download_via_requests(addr, path, output_name):
 
 # Define core variables
 format_filter = ("jpg", "jpeg", "png", "gif")
-gay_filter = ["gay", "femboy", "trap", "twink", "bisexual", "futa"]
+gay_filter = ["gay", "femboy", "trap", "twink", "bisexual", "futa", "venti"]
 sfw_lgbt_filter = ["egg", "lgbt", "ennnnnnnnnnnnbbbbbby"]
 skip_sites = ["pximg", "gelbooru"]
 allow_sites = ["redgifs", "discordapp"]
