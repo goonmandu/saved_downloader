@@ -11,13 +11,13 @@ SECRET = "THE CLIENT SECRET FOUND IN https://www.reddit.com/prefs/apps"
 import os
 import wget
 import html
-import shutil
 import requests.auth
+from filter import filter_dupes_and_invalids
 from credentials import USERNAME, PASSWORD, CLIENT_ID, SECRET
 
 
-def recursive_in(filter, string):
-    for entry in filter:
+def recursive_in(filter_list, string):
+    for entry in filter_list:
         if entry.lower() in string.lower():
             return True
     return False
@@ -56,7 +56,9 @@ if not os.path.exists("downloaded/sfw"):
 if not os.path.exists("filtered"):
     os.mkdir("filtered")
 
-count = int(input("How many HUNDRED posts to download? (3 means 300) "))
+count = int(input("How many HUNDRED posts to download? (Max 10) "))
+if count > 10:
+    count = 10
 
 # Authenticate App
 client_auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET)
@@ -70,7 +72,7 @@ headers = {
 }
 
 # Get API Token
-print("Getting API token...")
+print("Getting API token... ")
 response = requests.post(TOKEN_ACCESS_ENDPOINT, data=post_data, headers=headers, auth=client_auth)
 if response.status_code == 200:
     token_id = response.json()["access_token"]
@@ -88,9 +90,9 @@ headers_get = {
     "User-Agent": "Saved Image Downloader Beta 1",
     "Authorization": "Bearer " + token_id
 }
-print("Downloading...")
-# Get 5 * 100 = 500 latest saved posts
-for _ in range(count):
+print("Downloading... ")
+
+for _ in range(count):  # count * 100 items, max 1000
     response_saved = requests.get(OAUTH_ENDPOINT + f"/user/{USERNAME}/saved", headers=headers_get, params=params_get)
     data = response_saved.json()
     saved_count = len(data["data"]["children"])
@@ -141,14 +143,9 @@ for _ in range(count):
                 elif filename not in existing_files:
                     wget.download(entry, f"downloaded/straight/{filename}")
     params_get["after"] = data["data"]["after"]
-print("\nDone.")
-
-
-# TODO: Filter out invalid images
-'''
-print("Filtering invalid files...")
-for filename in os.listdir("downloaded"):
-    if os.path.getsize(f"downloaded/{filename}") < 4096:
-        shutil.move(f"downloaded/{filename}", f"filtered/{filename}")
 print("Done.")
-'''
+
+do_filter = input("Perform dupe/invalid check? [y/n] ").lower()
+
+if do_filter == "y":
+    filter_dupes_and_invalids()
