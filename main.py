@@ -12,15 +12,8 @@ import os
 import wget
 import html
 import requests.auth
-from filter import filter_dupes_and_invalids
+from filter import filter_dupes_and_invalids, recursive_in
 from credentials import USERNAME, PASSWORD, CLIENT_ID, SECRET
-
-
-def recursive_in(filter_list, string):
-    for entry in filter_list:
-        if entry.lower() in string.lower():
-            return True
-    return False
 
 
 # Probably will be used later as a wget.download alternative
