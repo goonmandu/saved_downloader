@@ -33,15 +33,20 @@ core_files = [
 def filter_dupes_and_invalids():
     print("Filtering duplicates and potentially invalid items...")
     to_move = []
+    # Scan each file in ./downloaded, and append path+filename to to_move if "(digit)" is found within it
     for subdir, dirs, files in os.walk(root_dir):
         for file in files:
             current_dir = os.path.join(subdir, file)
-            if (is_smaller_than(current_dir, 4096) and not recursive_in(core_files, current_dir)) or re.search(r"\(\d+?\)", current_dir) is not None:
+            if (is_smaller_than(current_dir, 4096) and not recursive_in(core_files, current_dir))\
+                    or re.search(r"\(\d+?\)", current_dir) is not None:
                 to_move.append(current_dir)
 
+    # If to_move is empty,
     if not to_move:
         print("The filter caught nothing.")
+    # If to_move is not empty,
     else:
+        # Move each file in to_move to the filtered directory
         for path in to_move:
             shutil.move(path, f"filtered/{path.split('/')[-1]}")
             print(f"Filtered {path}.")
