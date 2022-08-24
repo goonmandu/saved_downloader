@@ -102,11 +102,17 @@ for _ in range(count):  # count * 100 items, max 1000
 
     for post in saved_list:
         url = []
-        if "gallery" in post["url"] and post["media_metadata"] is not None:
-            for key in post["media_metadata"].keys():
-                preview_url = post["media_metadata"][key]["s"]["u"]
-                image_url = preview_url.replace("preview", "i").split("?")[0]
-                url.append(image_url)
+        if "gallery" in post["url"]:
+            if "crosspost_parent_list" in post.keys():
+                for key in post["crosspost_parent_list"][0]["media_metadata"].keys():
+                    preview_url = post["crosspost_parent_list"][0]["media_metadata"][key]["s"]["u"]
+                    image_url = preview_url.replace("preview", "i").split("?")[0]
+                    url.append(image_url)
+            else:
+                for key in post["media_metadata"].keys():
+                    preview_url = post["media_metadata"][key]["s"]["u"]
+                    image_url = preview_url.replace("preview", "i").split("?")[0]
+                    url.append(image_url)
         elif "redgifs" in post["url"]:
             search_for = '<meta property="og:video" content="'
             html_resp = html.unescape(requests.get(post["url"]).text)
