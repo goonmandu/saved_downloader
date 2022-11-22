@@ -1,6 +1,7 @@
 import os
 import re
 import shutil
+from chunk_md5 import chunk_md5
 
 
 def recursive_in(filter_list, string):
@@ -28,6 +29,23 @@ core_files = [
     ".DS_Store"
     "filter.py"
 ]
+
+"""
+Existing hash values.
+Import existing hash values to temporary hash list.
+Append hash values to temporary hash list as each file is scanned.
+If the hash of the file is in the hash list, remove the file.
+
+Pseudocode:
+h = open(hashes)
+hashes = [line.strip() for line in h.readlines()]
+for file in files:
+    hashes.append(md5hash(file))
+    if md5hash(file) in hashes:
+        os.remove(file)
+hashes = set(hashes)
+
+"""
 
 
 def filter_dupes_and_invalids():
