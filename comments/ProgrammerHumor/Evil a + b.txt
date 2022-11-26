@@ -1,0 +1,434 @@
+Relevant media: jw8ode019wy91.png
+
+
+Me Omw to add negative numbers and travel back in time 😎
+  └─Now *that*'s some serious optimization.
+    └─O(-n)
+      └─But is it NP complete?
+        └─Yes. It's also OSHA compliant
+          └─FDA approved
+            └─USDA Choice
+              └─Vegan, Kosher and Halal
+                └─Kirkland Signature
+                  └─Everyday great deals
+      └─O(-n) is unfortunately just O(n)
+        └─Actually, I think O(f(n)) runtime means that asymptotically, the runtime is bounded by positive real constant multiples of f(n), so O(-n) actually would not be O(n) because the constant would be negative.
+          └─while not equivalent to either, O(-n) would be in O(n), and it'd even be in O(1). If it existed (which obviously it can't) it would be its own category even better than O(1), but by definition of the classes, it's an element in O(n) and O(1), because it is bounded by any positive constant (and even by constant 0) in either definition.
+             Note that everything in O(1) is also in O(n), we just usually give the definition by the smallest class we can.
+            └─And besides the notation of O there's also the less widely used Theta (equally fast growing) and Omega (at least as fast growing) as well as the lower case variants (exclusively instead of inclusively). So while O(-n) is in O(n), O(-n) is not in Theta(n) or Omega(n).
+              └─\**algorithms class flashback*\*
+              └─Industry uses O as academia uses theta.
+        └─What about -O(n)?
+          └─You cannot negate sets like that. (Update: I mean with a minus sign, you can of course negate sets but that's ~A or a difference from it's superset A\B)
+             O(f) describes the set of all functions g for which holds for all factors k there is a c after which all values of f(x) ≥ g(x)•k for all x ≥ c.
+             But the closest to such a negation would be omega(f), which describes the set of all functions g for which holds for all factors k there is a c after which all values of g(x) &gt; f(x)•k for all x ≥ c.
+             (Please correct me if I'm wrong, I'm tired and didn't verify it)
+            └─Thanks! 
+               Also, screw you. My degree is in maths but it's been a hot minute. So now I'm gonna waste a significant amount of time to find a way to make it work and it's all your fault!!! I'll share my results tho
+            └─Sure, if you give up and quit trying you're never going to be able to negate a set.
+    └─    num1 = "A"
+           num2 = "B"
+      └─21, but is it?
+        └─Not unless it’s 131.
+    └─So THATS how stadia got negative latency!
+  └─Tfw they still use uint internally: *this little maneuver is gonna cost us 10000000 years*
+    └─Make that almost 585 **billion** years if we use 64-bit uint with 1 second granularity.
+      └─I was ofc talking about the very often used 49 bit standard 😛
+        └─42-bit\*
+          └─ceil(log2(31536000e7)) disagrees with you
+    └─*Hans Zimmer’s ~~No~~ Lotta time for Caution intensifies*
+  └─![gif](giphy|LcfBYS8BKhCvK)
+  └─serious question, is there any hypothetical algorithm where data is allowed to go back in time?
+     edit: in another words: if there was a magical computer which could send variable or data to the past (maybe like several milliseconds back or something - if it's longer like in days then people would find more interesting applications), what wacky algorithm could be possible?
+    └─Yes, there is a complexity class P\_CTC, i.e. polynomial time algorithms with access to time travel (closed timelike curves). Interestingly enough, while you can solve a lot of problems in P\_CTC, it doesn't magically allow you to solve any problem. I believe P\_CTC = PSPACE. Scott Aaronson has some papers on this.
+       Edit: some lecture notes on this: https://www.scottaaronson.com/democritus/lec19.html
+      └─well, I just read the link and understand nothing. so basically we cannot exploit such property?
+        └─We could exploit it, we could for example solve NP hard problems in polynomial time + time travel
+          └─Is there a trivial algorithm where everything can be solved in O(1) time by just taking forever with a normal algorithm and then sending the result back in time to when the function was called?
+             Or am I thinking about this like an idiot?
+            └─That is not a stupid first though, however you still need to do the computation, even if you already received the answer from the future (if you don't then that's one of those classic time travel paradoxes)
+               Scott: "The fact that you already have the answer at the beginning doesn't change the fact that you still have to do the computation! Refusing to count the complexity of that computation is like maxing out your credit card, then not worrying about the bill."
+      └─very interesting, much appreciated
+      └─https://imgur.io/gallery/n3RZCFS
+  └─Just be careful not to go so far back you're condemned to death as a witch because of that glowing brick you're carrying.
+
+
+the legacy code they told you not to touch
+  └─the guy who wrote this has a level nine unix beard so you better not touch it
+    └─&gt;level nine unix beard
+       /r/brandnewsentence
+  └─Understandable. If you do fix this, all of a sudden you’d see a bunch of new race conditions which were never observed before due to the built in delay.
+    └─And this is why nobody ever touches threading code.
+  └─Especially when you wrote it last week...
+
+
+[Sleep sort](https://rosettacode.org/wiki/Sorting_algorithms/Sleep_sort):
+       from asyncio import run, sleep, wait
+       from sys import argv
+       
+       async def f(n):
+           await sleep(n)
+           print(n)
+       
+       if __name__ == '__main__': 
+           run(wait(map(f, map(int, argv[1:]))))
+  └─I have to wonder if it's at all possible for sleep sort to be the most efficient option in some situation.
+    └─Not really. In the end, something would have to sort it in some way, and if it's not you then it's the scheduler.
+      └─Always that pesky Scheduler getting involved where it shouldn't!!
+        └─Uninstall it...
+          └─It wasn’t listed in applications so I had to delete the file?
+            └─just `sudo rm -rf / --no-preserve-root` my friend
+              └─Nooooo!!!!
+                 1; Turn on cumputer
+                 2; Open up computer
+                 3; Make your hands wet
+                 4; unplug your drives
+                 5; done
+                └─Common redditor mistake, the wet thing is supposed to be a woman, not your computer, neither is truly a replacement for the other, you need both.
+    └─Hmm maybe if every element is 0?
+    └─If the ammount of time doesn't matter, but you need to consume the least ammount of resources. And also only have to sort numbers that are lower than the ammount of seconds between now, and a reboot or shutdown.
+      └─So basically it can be useful for space exploration missions then: start sorting your array now, get the result once you reach Pluto
+    └─Quantum Bogosort is the fastest algorithm known (O(N)), though it does have the problem of requiring O(N!) universes, as well as the minor issue of requiring an operation with no known implementation (destroy the universe).
+    └─It's better than bogsort I guess
+  └─Now do it descending
+    └─Replace `sleep(n)` with `sleep(sys.maxint - n)`
+       Might take a *little* longer, but gets the job done
+    └─Sort ascending, `.reverse()`
+      └─That’s no fun
+    └─Just run time backwards duh
+      └─tenet
+
+
+`fun add(a: Int, b: Int): Int = if (b == 0) { a } else if (a == 0) { b } else { add(a xor b, (a and b) shl 1) }`
+  └─Had to stare at it for 10min to make sure it works.
+    └─That's my previous client's test strategy in a nutshell.
+      └─That's how I debug Heisenbugs. I stare at the buggy code for 10 minutes in order to collapse the bug's quantum waveform, run it again, voila.
+         I love making 0-line commits.
+      └─look at it 20 seconds - lgtm
+    └─It took me some time to see this is the program form of a full adder made of logic gates.
+      └─The human brain runs at about 10000 Hz. This is due to the internal dynamics of brain cells, including glia. Makes sense. A computer can intepret it in mere microseconds.
+    └─What is `shl`? Shift left? Can you do this in python?
+      └─Yeah, it's called a bitshift. We use `&lt;&lt;` and `&gt;&gt;` for them. Idk if I'm allowed to link here, so Google "python bitwise operators" for a better explanation than I can give
+        └─Thanks. I know about bit shift and have used them. Just never seen `shl` before
+          └─shl is often used as the keyword in assembly
+  └─Formatted
+         fun add(a: Int, b: Int): 
+             Int = if (b == 0) { 
+                 a
+             } else if (a == 0) {
+                 b
+             } else {
+                 add(a xor b, (a and b) shl 1)
+             }
+     For example 10+7 would be
+      
+         0b1010 ^ 0b0111 = 0b1101 = 13
+         (0b1010 &amp; 0b0111) &lt;&lt; 1 = 0b0100 = 4
+         0b1101 ^ 0b0100 = 0b1001 = 9
+         (0b1101 &amp; 0b0100) &lt;&lt; 1 = 0b1000 = 8
+         0b1001 ^ 0b1000 = 0b0001 = 1
+         (0b1001 &amp; 0b1000 ) &lt;&lt; 1 = 0b10000 = 16
+         0b00001 ^ 0b10000 = 0b10001 = 17
+         (0b00001 &amp; 0b10000 ) &lt;&lt; 1 = 0b00000 = 0
+  └─fun add(a: Int, b: Int):   
+       Int =   
+         if (b == 0) {   
+           a   
+         } else if (a == 0) {   
+           b   
+         } else {   
+           add(
+             a xor b,   
+             (a and b) shl 1
+           )   
+         }
+    └─```
+       fun add(a: Int, b: Int):
+       Int =
+           if (b == 0) {
+               a
+           } else if (a == 0) {
+               b
+           } else {
+               add( a xor b, (a and b) shl 1 )
+           }
+       ```
+      └─What's shl? I've never seen that operator before. Couldn't even Google it because that just gets autocorrected to shell
+        └─Shift left
+        └─Bit shift left.
+           In C it's the &lt;&lt; operator
+        └─Logical left shift
+    └─why didn’t the indenting work
+      └─need to indent like an extra 4 spaces for each line to format it as code
+  └─The most cursed full adder lol
+  └─thats actually a leetcode problem: https://leetcode.com/problems/sum-of-two-integers/
+  └─What the fuck?
+  └─Ripple carry is so slow, should've used carry lookahead! Surely that would look a lot cleaner
+  └─Throw back to VHDL and verilog. This reminds me of just a half adder. [As shown. ](https://i.imgur.com/wxib6Yy.png) I honestly preferred FPGA programming and circuit design because it seemed more intuitive with boolean gate logic and real world computing.
+
+
+I've just tried it with params 1000 and 500 and it looks like it's not working.
+   Edit: nevermind, it worked just fine
+  └─The issue is it guarantees a minimum amount of sleep, but it can take longer because of some fucky stuff with clock cycles, idk it’s been a while since I had to fix stuff with sleep.
+    └─create a while True: loop that constantly checks the current time until it's above x seconds.
+      └─But it takes time to do a comparison so the system time won’t be perfectly calculated since you can’t check every single cycle.
+        └─Yeah, but it would be close enough.
+  └─i hate this more than the code
+
+
+Intermittently off by one
+  └─Requirements did not specify minimum accuracy.
+    └─```
+       def add():
+           return 69
+       ```
+  └─According to the [docs](https://docs.python.org/3/library/time.html), it uses Unix time on Windows and Unix systems, so leap seconds aren't accounted for.
+    └─It would be off because sleep is not guaranteed to be exact. It sleeps for *at least* the given amount of time. The actual time usually depends on how busy the CPU is.
+      └─Ah, I didn't think about that but that makes sense. [Found an interesting Stack Overflow thread on it.](https://stackoverflow.com/questions/1133857/how-accurate-is-pythons-time-sleep)
+  └─Multiply each num with 1000000 before calling sleep. Then just strip away the last 6 digests of the result.
+
+
+Nice! And you did it in O(m+n) complexity! So rare to find his linear algorithms these days...
+  └─It's actually O(2^(m)+2^(n)) as m and n refers to the size of the input and not the actual input 🤓
+    └─In terms of bits, addition actually has O( n ) complexity. Multiplication has O( n^2 ), except you use [1729-dimensional Fourier transform](https://en.wikipedia.org/wiki/Galactic_algorithm#Integer_multiplication), then it'll be O( n*log( n ) )
+      └─Bro, I just wanted a*b. Why we gotta bring the multiverse into this?
+        └─Well, how can we be certain of the result without consulting Doctor Strange?
+      └─I'm horrified.
+      └─&gt;algorithm might become practical for numbers with merely billions or trillions of **digits**
+         made me laugh.
+         were talking about numbers that are "merely" Gigabytes large.
+      └─Wasn't multiplication kinda "solved", in a way where for any a &gt; 0 you can have an algorithm that does multiplication in O(n^1+a )?
+        └─I believe so, but the algorithm mentioned for O(nlogn) is still faster, albeit with incredibly large constants making it  useless in practice.
+          └─isnt fft multiplication nlogn and standard for number theoretic stuff?
+            └─Yeah, it's good for theory, bad for practical use
+      └─actually, if you can do modular inverses pretty fast, technically ntt over modular rings would be significantly faster than whatever this monstrosity is!
+      └─&gt; we are hopeful that with further refinements, the algorithm might become practical for numbers with merely billions or trillions of digits
+         Hahahaha awesome
+      └─Doesn't the time complexity of addition depend on the implementation in hardware? A ripple-carry adder would be O(n), but a carry-lookahead adder is O(log(n)) (although that depends on gate fan-in).
+    └─Where does your 2 constant come from? There's no logical reason for this function to be defined as exponential. So the time complexity is indeed O(m+n).
+       Someone please enlighten me if I am missing something, otherwise I've never seen such an incorrect technical response get so many upvotes in this subreddit
+      └─If n is the number, big O complexity is actually measured with respect to the number of bits of n, which is log(n) base 2.
+         Therefore, if you sleep n seconds the time you slept is exponential with respect to the size of the input, which is log(n)
+         See also prime testing and why it isn't considered to be linear despite the easiest algorithm be "check all numbers 1 through n to see if one is a divisor"
+      └─I agree with you I'd like to know too
+        └─Say your two numbers are both 2^8 -1.  Both of these are eight bit numbers, as they are represented by 11111111 in binary.  And in O(n) notation n is assumed to be the number of bits of input.  But the time you sleep is on the order of 2^8.
+           So here n is 8 (16 for both inputs together) despite the number you are adding being much larger, and the time you slept is about 2^8, exponentially larger than the number of bits in your input.
+    └─Not sure about that, how can it be exponentially complex ? Looks linear to me honestly
+      └─5x5 = 5x5
+         55x55 = 5x5 + 5x50 + 50x5 + 50x50
+         555*555 = 5x5 + 5x50 + 50x5 + 50x50 + 5x500 + 50x500 + 500x500 + 500x5 + 500x50
+         Hardware exists to perform it in a single operation up to a certain number of bits (platform dependent), but as you need more bits to represent these numbers, it devolves into the above.
+    └─how did this get so many upvotes? I've never seen a statement this wrong
+      └─Most people here heard of big O notation in intro to comp sci, never learned it, and definitely never had to apply it irl. That plus "but it's even worse than you thought"-explanations are always popular
+      └─It’s not *that* wrong. But it is wrong
+        └─Isn't `that wrong` implying that is *beyond* just plain wrong? I'm not a native speaker.
+          └─Using “that” like this implies it’s a little wrong, but not very wrong. Somewhere below the previously implied amount of wrong. The emphasis on “that” helps acknowledge that it definitely is some amount of wrong. 
+             Essentially means “It’s not as wrong as you’re implying, but it is wrong”.
+      └─Lol they thought they could get away with it by adding the 🤓
+    └─Variables can refer to whatever you want. I would expect a programmer to understand that.
+
+
+O(fuck you) complexity
+  └─Technically it's just O(n) since it grows linearly with the input.
+    └─You got it wrong, unless you are joking. The number of inputs here is constant. The value you give doesn't contribute to the n in time complexity, unless it is a collection of n values.
+      └─He got it wrong but not for the reason you mentioned.
+         Size of the input in this case is the number of bits in the numbers
+         Complexity will be O(2^n + 2^m)
+         (Because it sleeps for the value of the integer and not the number of bits of the integer)
+
+
+*Image Transcription: Code*
+   ---
+       from time import sleep, time
+       
+       def add(num1, num2):
+         """
+         adds two positive integers
+         """
+         start = time()
+         sleep(num1)
+         sleep(num2)
+         return int(time() - start)
+   ---
+   ^^I'm&amp;#32;a&amp;#32;human&amp;#32;volunteer&amp;#32;content&amp;#32;transcriber&amp;#32;and&amp;#32;you&amp;#32;could&amp;#32;be&amp;#32;too!&amp;#32;[If&amp;#32;you'd&amp;#32;like&amp;#32;more&amp;#32;information&amp;#32;on&amp;#32;what&amp;#32;we&amp;#32;do&amp;#32;and&amp;#32;why&amp;#32;we&amp;#32;do&amp;#32;it,&amp;#32;click&amp;#32;here!](https://www.reddit.com/r/TranscribersOfReddit/wiki/index)
+  └─Good human.
+    └─Would be funnier if a bot said this
+    └─Good human
+
+
+Is that how the progress bars in Windows are made?
+  └─Obligatory: https://xkcd.com/612/
+    └─There should be an xkcd about how there's always a relevant xkcd
+      └─[http://xkcd.com/33/](http://xkcd.com/33/)
+         I vote for that
+
+
+Counting on your fingers, computer edition
+
+
+And when you try to refactor and everything explodes you realize that there is race condition somewhere that is mitigated by having this. You add a vaguely phrased comment that it is needed and back away slowly.
+  └─Or you fix it and the users complain it's too fast now. They're not sure if it actually did anything
+
+
+Windows C version would be 1000 times faster
+  └─But wouldn't that return a smaller number and return an incorrect result?
+    └─I believe that's the joke
+
+
+That's from people who make software slow, then when the customer complain they sit on the issue for 3 weeks, clear out some functions like this and deliver a new version back... And the customer will even thank them.
+  └─Inverse problem-solving if you will.
+
+
+Fine, it's been 4 hours and it seems like today it has to be me;
+   Can someone please explain this one for the people in the back?
+  └─Funny enough, this program might also take that long to run, depending on user input... it's designed to add two integers together and return the result.
+     BUT instead of simply adding the two together like a sane person, it lets the clock run for *n*-time, equal to the two integers. Then it subtracts the start time from the end time and returns the result.
+    └─I GET IT NOW! Thanks, homie.
+    └─So the sleep function means “wait for n minutes and then continue”?
+      └─*n*-seconds, but that's the logic.
+      └─yes, though usually there is some leeway in the specification - it's more like "wait at least n seconds, and hopefully not too much more".  In real life, it's hard to garuantee that the computer won't be busy doing something else at the exact time the n seconds has elapsed.
+
+
+That's why Python is so slow
+
+
+Wow, that's evil.
+
+
+I would think `round()` would be more suited here, as you should always be very close to an integer amount of seconds, so rounding down doesn't make much sense
+  └─Would it matter? The overhead would always cause the result to be just above whole integers, no?
+    └─No, since `time.time()` is not accurate, and floating point operations are also a little bit inaccurate. It is only meant to tell you the time, and I would also assume that the overhead of calling `time.sleep()` is somewhat accounted for in how long it actually sleeps for.
+       But yes, if they used `time.perf_counter()` instead, then it should always be just barely above integers
+      └─Cool, thanks for answering!
+
+
+A few years ago I built a computer in Minecraft the worked similar:
+    ```
+   while num1 &gt; 0:
+     num1--
+     num2++
+   return num2
+   ```
+
+
+For folks like me who didn't get this, I put in some effort coz I had nothing better to do with my life rn.
+   time() function gives the current time;
+   sleep() function pauses the code for specified number of seconds. For example, Sleep(60) would cause the code to pause for 60 seconds.
+   Lets say you run the code at 2:00 AM and you want to add 60 + 40
+   start = time()
+   This will store 2:00AM in start variable.
+   sleep(60) &amp; sleep(40) will pause the code for a total of 100secs
+   Because the code was paused for 100 seconds, current time is 100 seconds ahead of the initial 2:00 AM we stored in start variable, therefore the difference (time()-start) will give us 100. Int will probably convert the 100 seconds into integer giving us 100 as the answer to 60+40
+
+
+I need to go to sleep after seeing this atrocity
+
+
+Are you just using the spacetime fabric as a memory storage for summing numbers
+  └─Fun fact: using only a clock you can transmit an arbitrary amount of data with just two bits!
+
+
+Fine as long as you're adding small numbers..
+  └─Are You claiming it wont work with big numbers?
+    └─Big numbers will yield *Patience Underflow,* even bigger numbers could yield *Integer Overflow.*
+      └─Thats the hardware problem, get more bits per processor. Or download more ram. /s
+
+
+Tell me you don't understand how context switching works without telling me you don't know how context switching works.
+
+
+&gt; `int()` automatically floors instead of rounding off
+   yep, if there's any chance that the sleep function returns *just a little bit early* then it can return an incorrect result.
+  └─&gt; The suspension time may be longer than requested by an arbitrary amount, because of the scheduling of other activity in the system.
+     ^(from the [docs](https://docs.python.org/3/library/time.html#time.sleep) )
+     IMHO that implies that the sleep duration should not be too short as it is only explicitly mentioned as possibly being longer. So I guess the function is good to go.
+
+
+This is not what Veritasium meant by analog computing lol
+
+
+Is process is halted for some reason the result might not be accurate
+
+
+Kernel scheduling granularity: hello
+
+
+Ah yes, evidence based addition
+
+
+while (num3 &lt; num1 + num2):  
+   num3+=1  
+     
+   return (num3)
+
+
+Oh... my god.
+   I don't know the guts of Python but I assume this would also return a vague approximation. It might even be system load dependent.
+   On the bright side it'd make releasing new, faster versions of the software easier. Delay loops are so oldskool.
+
+
+This is so awesome! Now do the same to create a pow function
+
+
+You can make a sorting algorithm the same way
+  └─hahahah:
+     - start a thread for each item in list
+     - each thread sleeps for *item + start of sort operation time* seconds (gotta reference the start time in case it takes a few seconds to start billions, nay, trillions of threads)
+     - when thread wakes up, it appends its number to sorted array
+
+
+It's from technical interview right?
+
+
+Show me on this repository where the evil code touched your brain
+
+
+stunningly creative
+
+
+Thanks, Satan.
+
+
+Great, now copilot will be tainted by this abomination
+
+
+    int add(int a, int b) {
+           void* c = NULL;
+           return &amp;(&amp;c[a])[b];
+       }
+
+
+I didn’t get it and am too afraid to ask
+  └─Yeah I'm here from /all and am sure this is funny but have no idea why.
+
+
+That's some thinking outside the box type of shit lol.
+
+
+Here’s a way to swap two variables without needing a third variable:
+   a=a+b
+   b=a-b
+   a=a-b
+  └─a = a ^ b
+     b = a ^ b
+     a = a ^ b
+
+
+What language is this. At present time I only really know python (and not well), and this doesn't look right to be python. I mean it might be? But it's not the way I'm being taught it.
+   Like 8ve been taught to just import time and do time.sleep. is this just a different way of doing it?
+
+
+I prefer `return str(num1)+str(num2)` cause I hate maths.
+
+
+elon’s top programmers be like
+
+
+but how you subtract? theres a subtract at the end
+
+
+TMW ordinary race conditions weren't bad enough.
+
+
+
+
