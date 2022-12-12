@@ -13,11 +13,9 @@ SECRET = "THE CLIENT SECRET FOUND IN https://www.reddit.com/prefs/apps"
 import os
 import urllib.error
 import wget
-# import html
 import requests.auth
 from filter import filter_dupes_and_invalids, recursive_in
 from credentials import USERNAME, PASSWORD, CLIENT_ID, SECRET
-import json
 
 
 # Download alternative for HTTP 403 errors
@@ -42,7 +40,7 @@ def recurse_comment_tree_and_write(outfile, comment_json):
             # TODO: I WAS TRYING TO SPLIT LINE BREAKS IN A COMMENT AND INDENT THEM
             for index, text in enumerate(text_lines):
                 if index and text:
-                    outfile.write('  ' * (item_data["depth"]+1) + ' ' + text + '\n')
+                    outfile.write('  ' * (item_data["depth"]) + text + '\n')
                 elif not index and text:
                     if not item_data["depth"]:
                         outfile.write(text + '\n')
@@ -249,8 +247,7 @@ for _ in range(count):
         post_id = post["name"].split("_")[-1]
         post_title = post["title"].replace("/", "slash").replace("\\", "backslash")
         post_subreddit = post["subreddit"]
-        comments_of_post = requests.get(OAUTH_ENDPOINT + f"/comments/{post_id}",
-                                        headers=headers_comments).json()[1]
+        comments_of_post = requests.get(OAUTH_ENDPOINT + f"/comments/{post_id}", headers=headers_comments).json()[1]
         # DEBUG
         # print(str(json.dumps(comments_of_post)))
         # print(type(comments_of_post))
