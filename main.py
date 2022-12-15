@@ -155,8 +155,6 @@ for _ in range(count):
                     url.append(image_url)
             # If the post is NOT a crosspost,
             else:
-                # DEBUG
-                # print("Not a crosspost")
 
                 # If post has been removed for some reason,
                 if post["media_metadata"] is None:
