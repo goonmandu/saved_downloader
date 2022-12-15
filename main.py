@@ -45,7 +45,7 @@ def recurse_comment_tree_and_write(outfile, comment_json):
                     if not item_data["depth"]:
                         outfile.write(text + '\n')
                     else:
-                        outfile.write('  ' * item_data["depth"] + '└─' + text_lines[0] + '\n')
+                        outfile.write('  ' * (item_data["depth"] - 1) + '└─' + text_lines[0] + '\n')
         if "replies" in item_data.keys():
             if item_data["replies"] != "":
                 recurse_comment_tree_and_write(outfile, item_data["replies"])
