@@ -34,7 +34,6 @@ def recurse_comment_tree_and_write(outfile, comment_json):
     working = comment_json["data"]["children"]
     for item in working:
         item_data = item["data"]
-        replies_exists = False
         if "body" in item_data.keys():
             text_lines = item_data["body"].split('\n')
             # TODO: I WAS TRYING TO SPLIT LINE BREAKS IN A COMMENT AND INDENT THEM
@@ -136,22 +135,13 @@ for _ in range(count):
 
     # Download images from source in URLs
     for post in saved_list:
-        # DEBUG
-        # print(post)
-        # continue
         # List of image URLs in the post, appended to within this for loop
         url = []
         filename = ""
-
         # If the post is a gallery,
         if "gallery" in post["url"]:
-            # DEBUG
-            # print(post.keys())
             # If the post is a crosspost,
             if "crosspost_parent_list" in post.keys():
-                # DEBUG
-                # print("Crossposted")
-
                 if post["crosspost_parent_list"][0]["media_metadata"] is None:
                     # Skip this post
                     post_num += 1
@@ -161,7 +151,6 @@ for _ in range(count):
                 # Dig into crosspost parent and get media_metadata from it
                 for key in post["crosspost_parent_list"][0]["media_metadata"].keys():
                     ext = post["crosspost_parent_list"][0]["media_metadata"][key]["m"].split("/")[-1]
-                    # preview_url = post["crosspost_parent_list"][0]["media_metadata"][key]["o"]["u"]
                     image_url = f"https://i.redd.it/{key}.{ext}"
                     url.append(image_url)
             # If the post is NOT a crosspost,
@@ -192,29 +181,12 @@ for _ in range(count):
             except KeyError:
                 # TODO: Make a log file of successes and fails and their reason
                 pass
-            '''
-            # DEBUG
-            print(post)
-            # Get redgifs post ID from HTML and convert it into a scrapable direct source
-            try:
-                search_for = '<meta property="og:video" content="'
-                html_resp = html.unescape(requests.get(post["url"]).text)
-                hacky_index = html_resp.index(search_for)
-                end_index = ─html_resp[hacky_index+len(search_for):].index('"')
-                url.append(html_resp[hacky_index+len(search_for):hacky_index+len(search_for)+end_index])
-            # If video was deleted on redgifs:
-            except ValueError:
-                url.append(post["preview"]["reddit_video_preview"]["fallback_url"]) 
-            '''
         # If the image source is anywhere else:
         else:
             url.append(post["url"])
 
         # For each image URL gathered from the post,
         for entry in url:
-            # DEBUG
-            # print(entry)
-
             # Allowed sites filter, I have no idea why I added this but pretty sure the code will break without it
             if not recursive_in(allow_sites, entry) and (not entry.endswith(format_filter)
                                                          or recursive_in(skip_sites, entry)):
@@ -248,9 +220,6 @@ for _ in range(count):
         post_title = post["title"].replace("/", "slash").replace("\\", "backslash")
         post_subreddit = post["subreddit"]
         comments_of_post = requests.get(OAUTH_ENDPOINT + f"/comments/{post_id}", headers=headers_comments).json()[1]
-        # DEBUG
-        # print(str(json.dumps(comments_of_post)))
-        # print(type(comments_of_post))
 
         if not os.path.exists(f"comments/{post_subreddit}"):
             os.mkdir(f"comments/{post_subreddit}")
