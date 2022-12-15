@@ -36,7 +36,6 @@ def recurse_comment_tree_and_write(outfile, comment_json):
         item_data = item["data"]
         if "body" in item_data.keys():
             text_lines = item_data["body"].split('\n')
-            # TODO: I WAS TRYING TO SPLIT LINE BREAKS IN A COMMENT AND INDENT THEM
             for index, text in enumerate(text_lines):
                 if index and text:
                     outfile.write('  ' * (item_data["depth"]) + text + '\n')
