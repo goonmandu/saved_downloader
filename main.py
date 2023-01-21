@@ -68,6 +68,30 @@ def remove_non_ascii(string: str) -> str:
     return ''.join(char for char in string if ord(char) < 128)
 
 
+def download_to_predefined_directory(image_link):
+    # Current working file name is the last item in web directory tree
+    filename = image_link.split("/")[-1]
+
+    # Check if origin subreddit has certain keywords, then download the images to an appropriate folder
+    # allow_sites block wget, so we need to spoof the user agent with another download function
+    try:
+        if recursive_in(gay_filter, post["subreddit"]):
+            if recursive_in(allow_sites, image_link):
+                download_via_requests(image_link, "downloaded/gay", filename)
+            elif filename not in existing_files:
+                wget.download(image_link, f"downloaded/gay/{filename}")
+        elif recursive_in(sfw_lgbt_filter, post["subreddit"]):
+            if recursive_in(allow_sites, image_link):
+                download_via_requests(image_link, "downloaded/sfw", filename)
+            elif filename not in existing_files:
+                wget.download(image_link, f"downloaded/sfw/{filename}")
+        else:
+            if recursive_in(allow_sites, image_link):
+                download_via_requests(image_link, "downloaded/straight", filename)
+            elif filename not in existing_files:
+                wget.download(image_link, f"downloaded/straight/{filename}")
+    except urllib.error.HTTPError:
+        pass
 # Define core variables
 format_filter = ("jpg", "jpeg", "png", "gif")
 gay_filter = ["gay", "femboy", "trap", "twink", "bisexual", "futa", "venti"]
@@ -203,36 +227,11 @@ for _ in range(count):
 
         # For each image URL gathered from the post,
         for entry in url:
-            # DEBUG
-            # print(entry)
-
             # Allowed sites filter, I have no idea why I added this but pretty sure the code will break without it
             if not recursive_in(allow_sites, entry) and (not entry.endswith(format_filter)
                                                          or recursive_in(skip_sites, entry)):
                 break
-            # Current working file name is the last item in web directory tree
-            filename = entry.split("/")[-1]
-
-            # Check if origin subreddit has certain keywords, then download the images to an appropriate folder
-            # allow_sites block wget, so we need to spoof the user agent with another download function
-            try:
-                if recursive_in(gay_filter, post["subreddit"]):
-                    if recursive_in(allow_sites, entry):
-                        download_via_requests(entry, "downloaded/gay", filename)
-                    elif filename not in existing_files:
-                        wget.download(entry, f"downloaded/gay/{filename}")
-                elif recursive_in(sfw_lgbt_filter, post["subreddit"]):
-                    if recursive_in(allow_sites, entry):
-                        download_via_requests(entry, "downloaded/sfw", filename)
-                    elif filename not in existing_files:
-                        wget.download(entry, f"downloaded/sfw/{filename}")
-                else:
-                    if recursive_in(allow_sites, entry):
-                        download_via_requests(entry, "downloaded/straight", filename)
-                    elif filename not in existing_files:
-                        wget.download(entry, f"downloaded/straight/{filename}")
-            except urllib.error.HTTPError:
-                pass
+            download_to_predefined_directory(entry)
         # Get comment tree of each post
         post_id = post["name"].split("_")[-1]
         # Replace Windows reserved chars with underscore in post title
