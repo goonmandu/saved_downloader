@@ -12,10 +12,23 @@ SECRET = "THE CLIENT SECRET FOUND IN https://www.reddit.com/prefs/apps"
 
 import os
 import urllib.error
+import multiprocessing
 import wget
 import requests.auth
 from filter import filter_dupes_and_invalids, recursive_in
 from credentials import USERNAME, PASSWORD, CLIENT_ID, SECRET
+from image_similarity import determine_similarity
+
+# Define core variables
+format_filter = ("jpg", "jpeg", "png", "gif")
+gay_filter = ["gay", "femboy", "trap", "twink", "bisexual", "futa", "venti"]
+sfw_lgbt_filter = ["egg", "lgbt", "ennnnnnnnnnnnbbbbbby"]
+skip_sites = ["pximg", "gelbooru"]
+allow_sites = ["redgifs", "discordapp"]
+TOKEN_ACCESS_ENDPOINT = "https://www.reddit.com/api/v1/access_token"
+OAUTH_ENDPOINT = "https://oauth.reddit.com"
+post_num = 0
+existing_files = []
 
 
 # Download alternative for HTTP 403 errors
@@ -46,7 +59,6 @@ def recurse_comment_tree_and_write(outfile, comment_json):
     working = comment_json["data"]["children"]
     for item in working:
         item_data = item["data"]
-        replies_exists = False
         if "body" in item_data.keys():
             text_lines = [remove_non_ascii(line) for line in item_data["body"].split('\n')]
             for index, text in enumerate(text_lines):
@@ -92,15 +104,15 @@ def download_to_predefined_directory(image_link):
                 wget.download(image_link, f"downloaded/straight/{filename}")
     except urllib.error.HTTPError:
         pass
-# Define core variables
-format_filter = ("jpg", "jpeg", "png", "gif")
-gay_filter = ["gay", "femboy", "trap", "twink", "bisexual", "futa", "venti"]
-sfw_lgbt_filter = ["egg", "lgbt", "ennnnnnnnnnnnbbbbbby"]
-skip_sites = ["pximg", "gelbooru"]
-allow_sites = ["redgifs", "discordapp"]
-TOKEN_ACCESS_ENDPOINT = "https://www.reddit.com/api/v1/access_token"
-OAUTH_ENDPOINT = "https://oauth.reddit.com"
-post_num = 0
+
+
+def filter_similar_images():
+    # Do a round-robin comparison for all newly downloaded images against existing ones
+    # Use the multiprocessing module so that it doesn't take literal ages to finish
+    # TODO: Use the existing_files list defined in the global scope to achieve this
+    # TODO: Might need to keep track of newly downloaded ones, and those that were detected as duplicates
+    pass
+
 
 # Create directory structure
 if not os.path.exists("downloaded"):
@@ -118,7 +130,11 @@ if not os.path.exists("comments"):
 
 count = int(input("How many HUNDRED posts to download? (Max 10) "))
 if count > 10:
+    print("Defaulting to maximum value of 10")
     count = 10
+elif count < 0:
+    print("Defaulting to minimum value of 1")
+    count = 1
 
 # Authenticate App
 client_auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET)
@@ -166,11 +182,10 @@ for _ in range(count):
     for i in range(saved_count):
         saved_list.append(post_data["data"]["children"][i]["data"])
 
-    # Get all files in base directory, and add to list
-    existing_files = []
+    # Get all files in base directory, and add to list if not indexed
     for root, dirs, file in os.walk(os.getcwd()):
         for name in file:
-            if name.endswith(format_filter):
+            if name.endswith(format_filter) and name not in existing_files:
                 existing_files.append(name)
 
     # Download images from source in URLs
