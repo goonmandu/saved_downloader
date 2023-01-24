@@ -2,10 +2,12 @@
 A script that automatically downloads your saved images on Reddit.
 
 # Requirements
-Tested on Python 3.9.  
+Tested on CPython 3.9 and 3.10.  
+Will test compatibility on PyPy 3.9.
 ```bash
 ~$ pip3 install wget 
 ~$ pip3 install requests
+~$ pip3 install opencv-python
 ```
 
 # If you want to use this:
