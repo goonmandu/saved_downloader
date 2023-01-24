@@ -109,8 +109,10 @@ def download_to_predefined_directory(image_link):
 def filter_similar_images():
     # Do a round-robin comparison for all newly downloaded images against existing ones
     # Use the multiprocessing module so that it doesn't take literal ages to finish
-    # TODO: Use the existing_files list defined in the global scope to achieve this
-    # TODO: Might need to keep track of newly downloaded ones, and those that were detected as duplicates
+    # Divide the existing list by number of threads, not the comparison threads
+    # The former method divides n/t, therefore resulting in (n^2)/(t^2) comparisons
+    # The latter only divides the number of total iterations by t, resulting in (n^2)/t
+    # Suggested by Makoto
     pass
 
 
