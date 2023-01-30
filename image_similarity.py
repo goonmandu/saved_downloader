@@ -2,6 +2,7 @@
 import cv2
 
 
+# TODO: THIS FUNCTION DETECTS TOO MANY FALSE POSITIVES. FIND BETTER ALGORITHM.
 def determine_similarity(control: any, test: any) -> float:
     """Determines the CORREL value of test, when compared against control.
 
