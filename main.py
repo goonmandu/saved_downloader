@@ -259,7 +259,8 @@ for _ in range(count):
         if not os.path.exists(f"comments/{post_subreddit}"):
             os.mkdir(f"comments/{post_subreddit}")
         with open(f"comments/{post_subreddit}/{post_title}.txt", "w") as pc:
-            pc.write(f"Relevant media: {filename}\n\n\n")
+            if "Relevant media: " not in pc.readlines:
+                pc.write(f"Relevant media: {filename}\n\n\n")
             recurse_comment_tree_and_write(pc, comments_of_post)
         post_num += 1
         print(f"Processed {post_num} of {count * 100} ({round(post_num / (count * 100) * 100, 3)}%)")
