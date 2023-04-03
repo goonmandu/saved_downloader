@@ -175,10 +175,17 @@ headers_comments = headers_get
 print("Downloading... ")
 
 # Download count * 100 latest images, max saved by reddit is 1000
-for _ in range(count):
+skip_hundreds = 0  # DEBUG!!
+for i in range(count):
     # Get Posts JSON from Reddit
     response_saved = requests.get(OAUTH_ENDPOINT + f"/user/{USERNAME}/saved", headers=headers_get, params=params_get)
     post_data = response_saved.json()
+
+    # DEBUG!!
+    if i < skip_hundreds:
+        params_get["after"] = post_data["data"]["after"]
+        continue
+
     saved_count = len(post_data["data"]["children"])
     saved_list = []
     for i in range(saved_count):
@@ -195,52 +202,55 @@ for _ in range(count):
         # List of image URLs in the post, appended to within this for loop
         url = []
         filename = ""
-
+        # print(post)
         # If the post is a gallery,
-        if "gallery" in post["url"]:
-            # If the post is a crosspost,
-            if "crosspost_parent_list" in post.keys():
-                # DEBUG
-                # print("Crossposted")
-                if post["crosspost_parent_list"][0]["media_metadata"] is None:
-                    # Skip this post
-                    post_num += 1
-                    print(f"Skipped {post_num} of {count * 100} ({round(post_num / (count * 100) * 100, 3)}%)")
-                    continue
+        try:
+            if "gallery" in post["url"]:
+                # If the post is a crosspost,
+                if "crosspost_parent_list" in post.keys():
+                    # DEBUG
+                    # print("Crossposted")
+                    if post["crosspost_parent_list"][0]["media_metadata"] is None:
+                        # Skip this post
+                        post_num += 1
+                        print(f"Skipped {post_num} of {count * 100} ({round(post_num / (count * 100) * 100, 3)}%)")
+                        continue
 
-                # Dig into crosspost parent and get media_metadata from it
-                for key in post["crosspost_parent_list"][0]["media_metadata"].keys():
-                    ext = post["crosspost_parent_list"][0]["media_metadata"][key]["m"].split("/")[-1]
-                    # preview_url = post["crosspost_parent_list"][0]["media_metadata"][key]["o"]["u"]
-                    image_url = f"https://i.redd.it/{key}.{ext}"
-                    url.append(image_url)
-            # If the post is NOT a crosspost,
-            else:
-                # If post has been removed for some reason,
-                if post["media_metadata"] is None:
-                    post_num += 1
-                    print(f"Skipped {post_num} of {count * 100} ({round(post_num / (count * 100) * 100, 3)}%)")
-                    continue
-
-                # Get media_metadata directly from post
-                for key in post["media_metadata"].keys():
-                    ext = post["media_metadata"][key]["m"].split("/")[-1]
-                    image_url = f"https://i.redd.it/{key}.{ext}"
-                    url.append(image_url)
-
-        # If the image source is https://redgifs.com,
-        elif "redgifs" in post["url"]:
-            try:
-                if "reddit_video_preview" in post["preview"].keys():
-                    url.append(post["preview"]["reddit_video_preview"]["fallback_url"])
+                    # Dig into crosspost parent and get media_metadata from it
+                    for key in post["crosspost_parent_list"][0]["media_metadata"].keys():
+                        ext = post["crosspost_parent_list"][0]["media_metadata"][key]["m"].split("/")[-1]
+                        # preview_url = post["crosspost_parent_list"][0]["media_metadata"][key]["o"]["u"]
+                        image_url = f"https://i.redd.it/{key}.{ext}"
+                        url.append(image_url)
+                # If the post is NOT a crosspost,
                 else:
-                    url.append(post["preview"]["images"][0]["source"]["url"].split("?")[0].replace("preview", "i"))
-            except KeyError:
-                # TODO: Make a log file of successes and fails and their reason
-                pass
-        # If the image source is anywhere else:
-        else:
-            url.append(post["url"])
+                    # If post has been removed for some reason,
+                    if post["media_metadata"] is None:
+                        post_num += 1
+                        print(f"Skipped {post_num} of {count * 100} ({round(post_num / (count * 100) * 100, 3)}%)")
+                        continue
+
+                    # Get media_metadata directly from post
+                    for key in post["media_metadata"].keys():
+                        ext = post["media_metadata"][key]["m"].split("/")[-1]
+                        image_url = f"https://i.redd.it/{key}.{ext}"
+                        url.append(image_url)
+
+            # If the image source is https://redgifs.com,
+            elif "redgifs" in post["url"]:
+                try:
+                    if "reddit_video_preview" in post["preview"].keys():
+                        url.append(post["preview"]["reddit_video_preview"]["fallback_url"])
+                    else:
+                        url.append(post["preview"]["images"][0]["source"]["url"].split("?")[0].replace("preview", "i"))
+                except KeyError:
+                    # TODO: Make a log file of successes and fails and their reason
+                    pass
+            # If the image source is anywhere else:
+            else:
+                url.append(post["url"])
+        except KeyError:
+            print("'url' not found in post JSON keys, skipping!")
 
         # For each image URL gathered from the post,
         for entry in url:
@@ -252,16 +262,19 @@ for _ in range(count):
         # Get comment tree of each post
         post_id = post["name"].split("_")[-1]
         # Replace Windows reserved chars with underscore in post title
-        post_title = replace_invalid_chars(post["title"])
-        post_subreddit = post["subreddit"]
-        comments_of_post = requests.get(OAUTH_ENDPOINT + f"/comments/{post_id}", headers=headers_comments).json()[1]
+        if "title" in post.keys():
+            post_title = replace_invalid_chars(post["title"])
+            if len(post_title) > 128:
+                post_title = post_title[:127]
+            post_subreddit = post["subreddit"]
+            comments_of_post = requests.get(OAUTH_ENDPOINT + f"/comments/{post_id}", headers=headers_comments).json()[1]
 
-        if not os.path.exists(f"comments/{post_subreddit}"):
-            os.mkdir(f"comments/{post_subreddit}")
-        with open(f"comments/{post_subreddit}/{post_title}.txt", "w") as pc:
-            if "Relevant media: " not in pc.readlines:
-                pc.write(f"Relevant media: {filename}\n\n\n")
-            recurse_comment_tree_and_write(pc, comments_of_post)
+            if not os.path.exists(f"comments/{post_subreddit}"):
+                os.mkdir(f"comments/{post_subreddit}")
+            with open(f"comments/{post_subreddit}/{post_title}.txt", "w+") as pc:
+                if not any("Relevant media: " in line for line in pc.readlines()):
+                    pc.write(f"Relevant media: {filename}\n\n\n")
+                recurse_comment_tree_and_write(pc, comments_of_post)
         post_num += 1
         print(f"Processed {post_num} of {count * 100} ({round(post_num / (count * 100) * 100, 3)}%)")
 
