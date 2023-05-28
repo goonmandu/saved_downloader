@@ -1,4 +1,6 @@
-# Reddit Saved Image Downloader  
+# Reddit Saved Image Downloader
+**THIS PROJECT IS NOW DEPRECATED, AND WILL NOT BE MAINTAINED.**<br>
+**Check out the [PRAW Rewrite](https://github.com/goonmandu/SavedDownloaderPraw) instead.** <br>
 A script that automatically downloads your saved images on Reddit.
 
 # Requirements
